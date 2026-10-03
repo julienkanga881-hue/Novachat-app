@@ -26,7 +26,7 @@ st.title("🤖 NovaChat AI")
 st.caption("Ton assistant ultra-intelligent, rapide et stylé")
 
 # Mets ta vraie clé API Groq entre les guillemets ci-dessous
-api_key = "gsk_BymVDajdOhUv7d5Fg9BWgdyb3FYCZF2crC1LsHuphEBxfmlQwYm"
+api_key = "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"
 
 # Initialisation de l'historique des messages avec un profil ultra-intelligent
 system_prompt = {
