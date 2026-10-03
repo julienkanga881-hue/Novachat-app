@@ -22,11 +22,8 @@ st.markdown("""
 st.title("🤖 NovaChat AI")
 st.caption("Ton assistant ultra-intelligent, rapide et stylé")
 
-# Récupération sécurisée de la clé depuis les Secrets Streamlit
-try:
-    api_key = st.secrets["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"]
-except Exception:
-    api_key = None
+# Mets ta vraie clé API Groq entre les guillemets ci-dessous :
+api_key = "mets_ta_cle_groq_ici"
 
 system_prompt = {
     "role": "system", 
@@ -50,8 +47,8 @@ with st.sidebar:
     st.markdown("---")
     st.markdown("Propulsé par **NovaChat AI**")
 
-if not api_key:
-    st.warning("⚠️ Veuillez configurer votre clé `GROQ_API_KEY` dans les Secrets de Streamlit.")
+if not api_key or api_key == "mets_ta_cle_groq_ici":
+    st.warning("⚠️ Veuillez configurer votre clé API Groq dans le code source.")
 else:
     client = Groq(api_key=api_key)
 
