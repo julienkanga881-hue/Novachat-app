@@ -53,9 +53,10 @@ with st.sidebar:
     st.markdown("Propulsé par **NovaChat AI** & **Llama 3.3 (70B)**")
 
 # Vérification de la clé API
-if not api_key or api_key == "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":
+if not api_key or api_key == "mets_ta_cle_groq_ici":
     st.warning("⚠️ Veuillez configurer votre clé API Groq dans le code source.")
 else:
+    ...
     client = Groq(api_key=api_key)
 
     # Affichage de l'image si importée
