@@ -25,13 +25,13 @@ st.markdown("""
 st.title("🤖 NovaChat AI")
 st.caption("Ton assistant ultra-intelligent, rapide et stylé")
 
-# Remplace par ta vraie clé API Groq
-api_key = "mets_ta_cle_groq_ici"
+# Mets ta vraie clé API Groq entre les guillemets ci-dessous
+api_key = "gsk_BymVDajdOhUv7d5Fg9BWgdyb3FYCZF2crC1LsHuphEBxfmlQwYm"
 
 # Initialisation de l'historique des messages avec un profil ultra-intelligent
 system_prompt = {
     "role": "system", 
-    "content": "Tu t'appelles NovaChat AI. Tu es un assistant virtuel extrêmement intelligent, cultivé, créatif et serviable, créé pour aider l'utilisateur dans tous ses projets (programmation, rédaction, analyse, culture générale, etc.). Réponds toujours de manière claire, structurée, professionnelle et détaillée en français. Ne dis jamais que tu es ChatGPT ou un modèle OpenAI."
+    "content": "Tu t'appelles NovaChat AI. Tu es un assistant virtuel extrêmement intelligent, cultivé, créatif et serviable, créé pour aider l'utilisateur dans tous ses projets. Réponds toujours de manière claire, structurée, professionnelle et détaillée en français. Ne dis jamais que tu es ChatGPT ou un modèle OpenAI."
 }
 
 if "messages" not in st.session_state:
@@ -56,7 +56,6 @@ with st.sidebar:
 if not api_key or api_key == "mets_ta_cle_groq_ici":
     st.warning("⚠️ Veuillez configurer votre clé API Groq dans le code source.")
 else:
-    ...
     client = Groq(api_key=api_key)
 
     # Affichage de l'image si importée
@@ -83,7 +82,7 @@ else:
                 try:
                     chat_completion = client.chat.completions.create(
                         messages=st.session_state.messages,
-                        model="llama-3.3-70b-versatile",  # Modèle géant et ultra-intelligent
+                        model="llama-3.3-70b-versatile",
                     )
                     response_text = chat_completion.choices[0].message.content
                     st.markdown(response_text)
