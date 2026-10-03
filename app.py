@@ -70,7 +70,7 @@ else:
                 try:
                     chat_completion = client.chat.completions.create(
                         messages=st.session_state.messages,
-                        model="llama-3.1-8b-instant",
+                        model="llama3-8b-8192",
                     )
                     response_text = chat_completion.choices[0].message.content
                     st.markdown(response_text)
