@@ -30,7 +30,7 @@ if prompt := st.chat_input("Pose ta question à NovaChat..."):
         with st.spinner("Réflexion en cours..."):
             try:
                 response = client.models.generate_content(
-                    model="gemini-2.5-flash",
+                    model="gemini-3.8-flash",
                     contents=prompt
                 )
                 bot_reply = response.text
