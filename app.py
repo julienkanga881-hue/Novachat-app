@@ -53,7 +53,7 @@ with st.sidebar:
     st.markdown("Propulsé par **NovaChat AI**")
 
 # Vérification de la clé API
-if not api_key or api_key == "mets_ta_cle_groq_ici":
+if not api_key or api_key == "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":
     st.warning("⚠️ Veuillez configurer votre clé API Groq dans le code source.")
 else:
     client = Groq(api_key=api_key)
