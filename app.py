@@ -23,7 +23,7 @@ st.title("🤖 NovaChat AI")
 st.caption("Ton assistant ultra-intelligent, rapide et stylé")
 
 # Mets ta vraie clé API Groq entre les guillemets ci-dessous :
-api_key = "mets_ta_cle_groq_ici"
+api_key = "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"
 
 system_prompt = {
     "role": "system", 
