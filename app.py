@@ -1,46 +1,40 @@
+import os
 import streamlit as st
 from google import genai
 
-# Configuration de la page
-st.set_page_config(page_title="NovaChat AI", page_icon="🤖", layout="centered")
-
+st.set_page_config(page_title="NovaChat AI", page_icon="🤖")
 st.title("🤖 NovaChat AI")
 st.caption("Ton assistant IA intelligent, rapide et stylé")
 
-# Ta clé API
-GEMINI_API_KEY = "AQ.Ab8RN6JTf..." # Remets ta clé API ici
-client = genai.Client(api_key=GEMINI_API_KEY)
+api_key = st.secrets.get("GEMINI_API_KEY") or os.environ.get("GEMINI_API_KEY")
 
-# Initialisation de l'IA et de l'historique
-if "chat" not in st.session_state:
-    st.session_state.chat = client.chats.create(
-        model='gemini-2.5-flash',
-        config={
-            "system_instruction": "Tu es NovaChat, une IA ultra-rapide, moderne, amicale et intelligente. Tu réponds de manière dynamique et bien structurée."
-        }
-    )
+if not api_key:
+    st.error("La clé API GEMINI_API_KEY est manquante dans les Secrets.")
+    st.stop()
 
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
-# Affichage des anciens messages
-for message in st.session_state.messages:
-    with st.chat_message(message["role"]):
-        st.markdown(message["content"])
+for msg in st.session_state.messages:
+    with st.chat_message(msg["role"]):
+        st.markdown(msg["content"])
 
-# Barre de saisie
 if prompt := st.chat_input("Pose ta question à NovaChat..."):
     st.session_state.messages.append({"role": "user", "content": prompt})
     with st.chat_message("user"):
         st.markdown(prompt)
 
+    client = genai.Client(api_key=api_key)
+
     with st.chat_message("assistant"):
-        with st.spinner("NovaChat réfléchit..."):
+        with st.spinner("Réflexion en cours..."):
             try:
-                response = st.session_state.chat.send_message(prompt)
-                reponse_txt = response.text
+                response = client.models.generate_content(
+                    model="gemini-2.5-flash",
+                    contents=prompt
+                )
+                bot_reply = response.text
+                st.markdown(bot_reply)
+                st.session_state.messages.append({"role": "assistant", "content": bot_reply})
             except Exception as e:
-                reponse_txt = f"⚠️ Erreur : {e}"
-            
-            st.markdown(reponse_txt)
-            st.session_state.messages.append({"role": "assistant", "content": reponse_txt})
+                st.error(f"Erreur : {e}")
