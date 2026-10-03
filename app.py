@@ -24,7 +24,7 @@ st.caption("Ton assistant ultra-intelligent, rapide et stylé")
 
 # Récupération sécurisée de la clé depuis les Secrets Streamlit
 try:
-    api_key = st.secrets["GROQ_API_KEY"]
+    api_key = st.secrets["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"]
 except Exception:
     api_key = None
 
