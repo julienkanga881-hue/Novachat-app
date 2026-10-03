@@ -7,7 +7,7 @@ st.title("🤖 NovaChat AI")
 st.caption("Ton assistant IA intelligent, rapide et stylé")
 
 # Mets ta clé API Groq entre les guillemets ci-dessous
-api_key = "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"
+api_key = "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"
 
 if not api_key or api_key == "mets_ta_cle_groq_ici":
     st.warning("⚠️ Veuillez configurer votre clé API Groq.")
