@@ -30,7 +30,7 @@ st.title("🤖 NovaChat AI")
 st.caption("Votre assistant intelligent, rapide et stylé")
 
 # Mets ta clé API Groq valide ici
-api_key = "TA_CLE_API_GROQ_ICI"
+api_key = "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"
 
 # Initialisation de l'historique des messages
 if "messages" not in st.session_state:
