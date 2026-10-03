@@ -70,7 +70,7 @@ else:
                 try:
                     chat_completion = client.chat.completions.create(
                         messages=st.session_state.messages,
-                        model="llama-3.3-70b-versatile",
+                        model="openai/gpt-oss-20b",
                     )
                     response_text = chat_completion.choices[0].message.content
                     st.markdown(response_text)
