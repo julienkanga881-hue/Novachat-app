@@ -9,7 +9,7 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Style CSS personnalisé pour un look épuré et moderne
+# Style CSS personnalisé
 st.markdown("""
     <style>
     .stChatInput {
@@ -23,25 +23,26 @@ st.markdown("""
 
 # Titre principal
 st.title("🤖 NovaChat AI")
-st.caption("Ton assistant intelligent, rapide et stylé")
+st.caption("Ton assistant ultra-intelligent, rapide et stylé")
 
-# Mets ta vraie clé API Groq entre les guillemets ci-dessous
-api_key = "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"
+# Remplace par ta vraie clé API Groq
+api_key = "mets_ta_cle_groq_ici"
 
-# Initialisation de l'historique des messages
+# Initialisation de l'historique des messages avec un profil ultra-intelligent
+system_prompt = {
+    "role": "system", 
+    "content": "Tu t'appelles NovaChat AI. Tu es un assistant virtuel extrêmement intelligent, cultivé, créatif et serviable, créé pour aider l'utilisateur dans tous ses projets (programmation, rédaction, analyse, culture générale, etc.). Réponds toujours de manière claire, structurée, professionnelle et détaillée en français. Ne dis jamais que tu es ChatGPT ou un modèle OpenAI."
+}
+
 if "messages" not in st.session_state:
-    st.session_state.messages = [
-        {"role": "system", "content": "Tu t'appelles NovaChat AI. Tu es un assistant virtuel intelligent, sympathique et ultra-rapide, développé pour aider l'utilisateur. Tu ne dois jamais dire que tu es ChatGPT ou un modèle développé par OpenAI."}
-    ]
+    st.session_state.messages = [system_prompt]
 
 # Barre latérale (Sidebar)
 with st.sidebar:
     st.header("💬 Discussion")
     
     if st.button("➕ Nouvelle discussion", use_container_width=True):
-        st.session_state.messages = [
-            {"role": "system", "content": "Tu t'appelles NovaChat AI. Tu es un assistant virtuel intelligent, sympathique et ultra-rapide, développé pour aider l'utilisateur. Tu ne dois jamais dire que tu es ChatGPT ou un modèle développé par OpenAI."}
-        ]
+        st.session_state.messages = [system_prompt]
         st.rerun()
         
     st.markdown("---")
@@ -49,19 +50,19 @@ with st.sidebar:
     uploaded_file = st.file_uploader("Importer une image", type=["jpg", "jpeg", "png"])
     
     st.markdown("---")
-    st.markdown("Propulsé par **NovaChat AI**")
+    st.markdown("Propulsé par **NovaChat AI** & **Llama 3.3 (70B)**")
 
 # Vérification de la clé API
-if not api_key or api_key == "mets_ta_cle_groq_ici":
+if not api_key or api_key == "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":
     st.warning("⚠️ Veuillez configurer votre clé API Groq dans le code source.")
 else:
     client = Groq(api_key=api_key)
 
     # Affichage de l'image si importée
     if uploaded_file is not None:
-        st.image(uploaded_file, caption="Image importée pour analyse", width=250)
+        st.image(uploaded_file, caption="Image importée", width=250)
 
-    # Affichage de l'historique (en masquant l'instruction système pour l'utilisateur)
+    # Affichage de l'historique (sans afficher le message système)
     for message in st.session_state.messages:
         if message["role"] != "system":
             with st.chat_message(message["role"]):
@@ -75,13 +76,13 @@ else:
         with st.chat_message("user"):
             st.markdown(user_prompt)
 
-        # Génération de la réponse de l'assistant
+        # Génération de la réponse avec le modèle ultra-puissant
         with st.chat_message("assistant"):
             with st.spinner("NovaChat réfléchit..."):
                 try:
                     chat_completion = client.chat.completions.create(
                         messages=st.session_state.messages,
-                        model="openai/gpt-oss-20b",
+                        model="llama-3.3-70b-versatile",  # Modèle géant et ultra-intelligent
                     )
                     response_text = chat_completion.choices[0].message.content
                     st.markdown(response_text)
