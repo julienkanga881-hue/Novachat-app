@@ -1,79 +1,134 @@
 import streamlit as st
-from groq import Groq
+from google import genai
 
+# Configuration de la page Streamlit
 st.set_page_config(
     page_title="NovaChat AI",
-    page_icon="🤖",
+    page_icon="✨",
     layout="centered",
     initial_sidebar_state="expanded"
 )
 
+# 🎨 DESIGN CSS PERSONNALISÉ (Style Gemini & ChatGPT combinés)
 st.markdown("""
-    <style>
-    .stChatInput {
-        position: fixed;
-        bottom: 0;
-        background-color: white;
-        padding-bottom: 20px;
+<style>
+    /* Style global de l'application */
+    .main {
+        background-color: #131314;
+        color: #e3e3e3;
     }
-    </style>
+    
+    /* Masquer le menu par défaut et le footer Streamlit */
+    #MainMenu {visibility: hidden;}
+    footer {visibility: hidden;}
+    
+    /* Style des bulles de messages */
+    .stChatMessage {
+        padding: 1rem;
+        border-radius: 12px;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: flex-start;
+        line-height: 1.5;
+    }
+    
+    /* Message de l'utilisateur */
+    [data-testid="stChatMessage"]:nth-child(odd) {
+        background-color: #1e1f20;
+        border: 1px solid #333538;
+    }
+    
+    /* Message de l'assistant AI */
+    [data-testid="stChatMessage"]:nth-child(even) {
+        background-color: #2b2d31;
+        border: 1px solid #3f4248;
+    }
+
+    /* Style de la zone de saisie en bas */
+    .stChatInputContainer {
+        padding-bottom: 1rem;
+    }
+    
+    /* En-tête personnalisé */
+    .chat-header {
+        text-align: center;
+        padding: 1rem 0;
+        border-bottom: 1px solid #333538;
+        margin-bottom: 2rem;
+    }
+    .chat-header h1 {
+        font-size: 2.2rem;
+        background: linear-gradient(90deg, #4285F4, #9B72CF, #D96570);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-weight: 700;
+    }
+    .chat-header p {
+        color: #8e918f;
+        font-size: 0.95rem;
+    }
+</style>
 """, unsafe_allow_html=True)
 
-st.title("🤖 NovaChat AI")
-st.caption("Ton assistant ultra-intelligent, rapide et stylé")
+# En-tête visuel de l'application
+st.markdown("""
+    <div class="chat-header">
+        <h1>NovaChat AI</h1>
+        <p>Votre assistant intelligent, rapide et élégant</p>
+    </div>
+""", unsafe_allow_html=True)
 
-# Mets ta vraie clé API Groq entre les guillemets ci-dessous :
-api_key = "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"
-
-system_prompt = {
-    "role": "system", 
-    "content": "Tu t'appelles NovaChat AI. Tu es un assistant virtuel extrêmement intelligent, cultivé, créatif et serviable, créé pour aider l'utilisateur. Réponds toujours de manière claire, structurée et détaillée en français. Ne dis jamais que tu es ChatGPT ou un modèle OpenAI."
-}
-
-if "messages" not in st.session_state:
-    st.session_state.messages = [system_prompt]
-
+# Barre latérale (Sidebar) pour les paramètres
 with st.sidebar:
-    st.header("💬 Discussion")
+    st.image("https://img.icons8.com/fluency/96/artificial-intelligence.png", width=70)
+    st.title("Paramètres")
+    st.markdown("---")
     
-    if st.button("➕ Nouvelle discussion", use_container_width=True):
-        st.session_state.messages = [system_prompt]
+    # Sélection du modèle ou options
+    model_choice = st.selectbox("Modèle IA", ["Gemini 2.5 Flash", "Gemini Pro"])
+    
+    st.markdown("---")
+    if st.button("Effacer la conversation", type="primary", use_container_width=True):
+        st.session_state.messages = []
         st.rerun()
         
-    st.markdown("---")
-    st.subheader("⚙️ Options & Médias")
-    uploaded_file = st.file_uploader("Importer une image", type=["jpg", "jpeg", "png"])
-    
-    st.markdown("---")
-    st.markdown("Propulsé par **NovaChat AI**")
+    st.markdown("<div style='position: fixed; bottom: 20px; color: #8e918f; font-size: 0.8rem;'>Propulsé par Google GenAI & Streamlit</div>", unsafe_allow_html=True)
 
-if not api_key or api_key == "mets_ta_cle_groq_ici":
-    st.warning("⚠️ Veuillez configurer votre clé API Groq dans le code source.")
-else:
-    client = Groq(api_key=api_key)
+# Initialisation de l'historique des messages dans la session
+if "messages" not in st.session_state:
+    st.session_state.messages = [
+        {"role": "assistant", "content": "Bonjour ! Je suis NovaChat. Comment puis-je vous aider aujourd'hui ?"}
+    ]
 
-    if uploaded_file is not None:
-        st.image(uploaded_file, caption="Image importée", width=250)
+# Affichage de l'historique des messages
+for message in st.session_state.messages:
+    with st.chat_message(message["role"]):
+        st.markdown(message["content"])
 
-    for message in st.session_state.messages:
-        if message["role"] != "system":
-            with st.chat_message(message["role"]):
-                st.markdown(message["content"])
+# Gestion de la saisie utilisateur et appel API
+if prompt := st.chat_input("Envoyez un message à NovaChat..."):
+    # Ajout du message utilisateur à l'historique
+    st.session_state.messages.append({"role": "user", "content": prompt})
+    with st.chat_message("user"):
+        st.markdown(prompt)
 
-    if user_prompt := st.chat_input("Envoyez un message à NovaChat..."):
-        st.session_state.messages.append({"role": "user", "content": user_prompt})
-        with st.chat_message("user"):
-            st.markdown(user_prompt)
-
-        with st.chat_message("assistant"):
-            with st.spinner("NovaChat réfléchit..."):
-                try:
-                    chat_completion = client.chat.completions.create(
-                        messages=st.session_state.messages,
-                        model="openai/gpt-oss-20b",
-                    )
-                    response_text = chat_completion.choices[0].message.content
-                    st.markdown(response_text)
-                    st.session_state.messages.append({"role": "assistant", "content": response_text})
-                except Exception as e:
-                    st.error(f"Une erreur est survenue : {e}")
+    # Génération de la réponse de l'IA
+    with st.chat_message("assistant"):
+        message_placeholder = st.empty()
+        message_placeholder.markdown("Réflexion en cours...")
+        
+        try:
+            # Connexion au client GenAI (assure-toi d'avoir configuré ta clé API dans les secrets Streamlit)
+            client = genai.Client()
+            response = client.models.generate_content(
+                model='gemini-2.5-flash',
+                contents=prompt,
+            )
+            ai_response = response.text
+        except Exception as e:
+            ai_response = f"Une erreur est survenue : {e}"
+            
+        message_placeholder.markdown(ai_response)
+        
+    # Ajout de la réponse de l'assistant à l'historique
+    st.session_state.messages.append({"role": "assistant", "content": ai_response})
