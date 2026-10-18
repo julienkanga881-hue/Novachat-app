@@ -9,7 +9,7 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# 🎨 DESIGN CSS PERSONNALISÉ (Style Gemini & ChatGPT combinés)
+# 🎨 DESIGN CSS AVANCÉ (Style Gemini & ChatGPT combinés)
 st.markdown("""
 <style>
     /* Style global de l'application */
@@ -24,12 +24,11 @@ st.markdown("""
     
     /* Style des bulles de messages */
     .stChatMessage {
-        padding: 1rem;
-        border-radius: 12px;
+        padding: 1rem 1.2rem;
+        border-radius: 14px;
         margin-bottom: 1rem;
-        display: flex;
-        align-items: flex-start;
-        line-height: 1.5;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        line-height: 1.6;
     }
     
     /* Message de l'utilisateur */
@@ -44,28 +43,24 @@ st.markdown("""
         border: 1px solid #3f4248;
     }
 
-    /* Style de la zone de saisie en bas */
-    .stChatInputContainer {
-        padding-bottom: 1rem;
-    }
-    
     /* En-tête personnalisé */
     .chat-header {
         text-align: center;
-        padding: 1rem 0;
+        padding: 1.5rem 0;
         border-bottom: 1px solid #333538;
         margin-bottom: 2rem;
     }
     .chat-header h1 {
-        font-size: 2.2rem;
+        font-size: 2.5rem;
         background: linear-gradient(90deg, #4285F4, #9B72CF, #D96570);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
-        font-weight: 700;
+        font-weight: 800;
+        margin-bottom: 0.2rem;
     }
     .chat-header p {
         color: #8e918f;
-        font-size: 0.95rem;
+        font-size: 1rem;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -74,25 +69,38 @@ st.markdown("""
 st.markdown("""
     <div class="chat-header">
         <h1>NovaChat AI</h1>
-        <p>Votre assistant intelligent, rapide et élégant</p>
+        <p>L'alliance parfaite de la précision et de l'élégance</p>
     </div>
 """, unsafe_allow_html=True)
 
-# Barre latérale (Sidebar) pour les paramètres
+# Barre latérale (Sidebar) pour les paramètres et options
 with st.sidebar:
-    st.image("https://img.icons8.com/fluency/96/artificial-intelligence.png", width=70)
-    st.title("Paramètres")
+    st.image("https://img.icons8.com/fluency/96/artificial-intelligence.png", width=65)
+    st.title("NovaChat Control")
     st.markdown("---")
     
-    # Sélection du modèle ou options
-    model_choice = st.selectbox("Modèle IA", ["gemini-4.0-flash"])
+    # Choix du modèle
+    model_choice = st.selectbox(
+        "Modèle IA", 
+        ["gemini-1.5-flash", "gemini-1.5-pro"],
+        help="Sélectionne la version du modèle Google GenAI"
+    )
     
     st.markdown("---")
-    if st.button("Effacer la conversation", type="primary", use_container_width=True):
-        st.session_state.messages = []
+    
+    # Bouton pour effacer l'historique
+    if st.button("🗑️ Nouvelle conversation", type="primary", use_container_width=True):
+        st.session_state.messages = [
+            {"role": "assistant", "content": "Bonjour ! Je suis NovaChat. Comment puis-je vous aider aujourd'hui ?"}
+        ]
         st.rerun()
         
-    st.markdown("<div style='position: fixed; bottom: 20px; color: #8e918f; font-size: 0.8rem;'>Propulsé par Google GenAI & Streamlit</div>", unsafe_allow_html=True)
+    st.markdown("""
+        <div style='position: fixed; bottom: 20px; color: #8e918f; font-size: 0.8rem;'>
+            Propulsé par Google GenAI & Streamlit<br>
+            Design personnalisé v2.0
+        </div>
+    """, unsafe_allow_html=True)
 
 # Initialisation de l'historique des messages dans la session
 if "messages" not in st.session_state:
@@ -100,33 +108,45 @@ if "messages" not in st.session_state:
         {"role": "assistant", "content": "Bonjour ! Je suis NovaChat. Comment puis-je vous aider aujourd'hui ?"}
     ]
 
-# Affichage de l'historique des messages
+# Affichage de l'historique des messages de la conversation
 for message in st.session_state.messages:
     with st.chat_message(message["role"]):
         st.markdown(message["content"])
 
 # Gestion de la saisie utilisateur et appel API
-if prompt := st.chat_input("Envoyez un message à NovaChat..."):
+if prompt := st.chat_input("Posez votre question à NovaChat..."):
     # Ajout du message utilisateur à l'historique
     st.session_state.messages.append({"role": "user", "content": prompt})
     with st.chat_message("user"):
         st.markdown(prompt)
 
-    # Génération de la réponse de l'IA
+    # Génération de la réponse de l'IA avec le client Google GenAI
     with st.chat_message("assistant"):
         message_placeholder = st.empty()
-        message_placeholder.markdown("Réflexion en cours...")
+        message_placeholder.markdown("✨ *NovaChat réfléchit...*")
         
         try:
-            # Connexion au client GenAI (assure-toi d'avoir configuré ta clé API dans les secrets Streamlit)
-            client = genai.Client()
+            # 🔑 Insère ta clé API Google AI Studio ci-dessous
+            my_api_key = "AIzaSy..." 
+            
+            client = genai.Client(api_key=my_api_key)
+            
+            # Appel API avec consignes expertes (style Gemini + ChatGPT)
             response = client.models.generate_content(
-                model='gemini-2.5-flash',
+                model=model_choice,
                 contents=prompt,
+                config={
+                    'system_instruction': (
+                        "Tu es NovaChat, un assistant virtuel de pointe développé par Julien Kanga. "
+                        "Tu combines la structure claire et rigoureuse de ChatGPT avec la fluidité et l'intelligence de Gemini. "
+                        "Utilise systématiquement des listes à puces, du texte en gras pour les notions clés, et structure "
+                        "tes explications de manière claire, professionnelle et détaillée."
+                    )
+                }
             )
             ai_response = response.text
         except Exception as e:
-            ai_response = f"Une erreur est survenue : {e}"
+            ai_response = f"⚠️ Une erreur est survenue lors de la communication avec l'API : `{e}`"
             
         message_placeholder.markdown(ai_response)
         
