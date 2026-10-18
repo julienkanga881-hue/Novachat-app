@@ -127,7 +127,7 @@ if prompt := st.chat_input("Posez votre question à NovaChat..."):
         
         try:
             # 🔑 Insère ta clé API Google AI Studio ci-dessous
-            my_api_key = "AIzaSy..." 
+            my_api_key = "AQ.Ab8RN6LEzcBmRad1ux4EtqOfMazvNzjpHUrqvYaGZ2To23o8Rw" 
             
             client = genai.Client(api_key=my_api_key)
             
