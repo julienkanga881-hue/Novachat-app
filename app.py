@@ -82,7 +82,7 @@ with st.sidebar:
     # Choix du modèle
     model_choice = st.selectbox(
         "Modèle IA", 
-        ["gemini-1.5-flash", "gemini-1.5-pro"],
+        ["gemini-1.5-flash", "gemini-2.5-flash"],
         help="Sélectionne la version du modèle Google GenAI"
     )
     
