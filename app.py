@@ -85,7 +85,7 @@ with st.sidebar:
     st.markdown("---")
     
     # Sélection du modèle ou options
-    model_choice = st.selectbox("Modèle IA", ["Gemini 2.5 Flash", "Gemini Pro"])
+    model_choice = st.selectbox("Modèle IA", ["gemini-1.5-flash"])
     
     st.markdown("---")
     if st.button("Effacer la conversation", type="primary", use_container_width=True):
