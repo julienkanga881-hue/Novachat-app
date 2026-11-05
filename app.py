@@ -127,7 +127,7 @@ if prompt := st.chat_input("Posez votre question à NovaChat..."):
         
         try:
             # Clé API configurée directement (ou via les secrets si tu préfères)
-            my_api_key = "AIzaSy..." # Remplace par ta vraie clé si nécessaire
+            my_api_key = "AIzaSy..." # AQ.Ab8RN6JljYgdeLduA_74eJq2B_V902n0dyLN51MOC9rPDFn8wg
             
             client = genai.Client(api_key=my_api_key)
             
