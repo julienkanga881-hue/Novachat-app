@@ -79,7 +79,7 @@ with st.sidebar:
     st.title("NovaChat Control")
     st.markdown("---")
     
-    # Choix du modèle
+    # Choix du modèle stable
     model_choice = st.selectbox(
         "Modèle IA", 
         ["gemini-1.5-flash", "gemini-2.5-flash"],
@@ -126,8 +126,8 @@ if prompt := st.chat_input("Posez votre question à NovaChat..."):
         message_placeholder.markdown("✨ *NovaChat réfléchit...*")
         
         try:
-            # 🔑 Insère ta clé API Google AI Studio ci-dessous
-            my_api_key = "AQ.Ab8RN6LEzcBmRad1ux4EtqOfMazvNzjpHUrqvYaGZ2To23o8Rw" 
+            # Clé API configurée directement (ou via les secrets si tu préfères)
+            my_api_key = "AIzaSy..." # Remplace par ta vraie clé si nécessaire
             
             client = genai.Client(api_key=my_api_key)
             
